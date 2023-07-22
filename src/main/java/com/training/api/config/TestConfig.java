@@ -37,6 +37,7 @@ public class TestConfig implements CommandLineRunner {
 		n1.getCategory().add(c2);
 		n2.getCategory().add(c2);
 		n3.getCategory().add(c2);
+		System.out.println(n3);
 		n4.getCategory().add(c1);
 		n5.getCategory().add(c1);
 		c1.getNews().add(n1);

@@ -1,9 +1,11 @@
 package com.training.api.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.training.api.dto.NewsDto;
 
 import jakarta.persistence.Entity;
@@ -25,15 +27,17 @@ public class News {
 	private String title;
 	private String content;
 
-	@ManyToMany
+    @ManyToMany
+    @JsonManagedReference
 	@JoinTable(name = "tb_news_category", joinColumns = @JoinColumn(name = "news_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private List<Category> category = new ArrayList<>();
+	private Set<Category> categories = new HashSet<>();
 
 	public News(Long id, String title, String content) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
+		
 	}
 
 	public News() {
@@ -74,8 +78,9 @@ public class News {
 		this.content = content;
 	}
 
-	public List<Category> getCategory() {
-		return category;
+	@JsonManagedReference
+	public Set<Category> getCategory() {
+		return categories;
 	}
 
 	@Override
@@ -95,9 +100,6 @@ public class News {
 		return Objects.equals(id, other.id);
 	}
 
-	@Override
-	public String toString() {
-		return "News [id=" + id + ", title=" + title + ", content=" + content + ", category=" + category + "]";
-	}
+	
 
 }

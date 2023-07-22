@@ -1,20 +1,20 @@
 package com.training.api.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.training.api.models.Category;
+import com.training.api.models.News;
 
 public class CategoryDto {
 
 	private Long id;
 	private String name;
 
-	private List<NewsDto> news = new ArrayList<>();
+	private Set<News> news = new HashSet<>();
 
 	public CategoryDto(Category category) {
-		super();
 		this.id = category.getId();
 		this.name = category.getName();
 	}
@@ -39,7 +39,7 @@ public class CategoryDto {
 		this.name = name;
 	}
 
-	public List<NewsDto> getNews() {
+	public Set<News> getNews() {
 		return news;
 	}
 

@@ -1,12 +1,13 @@
 package com.training.api.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,8 +24,9 @@ public class Category {
 	private String name;
 
 	
-	@ManyToMany(mappedBy = "category")
-	private List<News> news = new ArrayList<>();
+	@ManyToMany(mappedBy = "categories" , fetch = FetchType.LAZY)
+    @JsonBackReference
+	private Set<News> news = new HashSet<>();
 
 	public Category(Long id, String name) {
 		this.id = id;
@@ -51,7 +53,7 @@ public class Category {
 		this.name = name;
 	}
 
-	public List<News> getNews() {
+	public Set<News> getNews() {
 		return news;
 	}
 

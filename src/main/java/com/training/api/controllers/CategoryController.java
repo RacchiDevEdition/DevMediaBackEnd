@@ -11,44 +11,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.training.api.dto.CategoryDto;
 import com.training.api.dto.NewsDto;
+import com.training.api.services.CategoryService;
 import com.training.api.services.NewsService;
-import com.training.api.utils.URL;
 
 @RestController
-@RequestMapping(value = "/news")
-public class NewsController {
+@RequestMapping(value = "/category")
+public class CategoryController {
 
 	@Autowired
-	private NewsService service;
+	private CategoryService service;
+
+	@Autowired
+	private NewsService nservice;
 
 	@GetMapping
-	public ResponseEntity<List<NewsDto>> findAll() {
-		List<NewsDto> news = service.findAll();
+	public ResponseEntity<List<CategoryDto>> findAll() {
+		List<CategoryDto> news = service.findAll();
 		return ResponseEntity.ok().body(news);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<NewsDto> findById(@PathVariable Long id) {
-		NewsDto byId = service.findById(id);
+	public ResponseEntity<List<CategoryDto>> findById(@PathVariable Long id) {
+		List<CategoryDto> byId = service.findById(id);
 		return ResponseEntity.ok().body(byId);
 	}
- 
-	@GetMapping(value = "/titlesearch")
-	public NewsDto findByTitleIs(@ModelAttribute("title") @RequestParam String title) {
 
-		title = URL.decodeParam(title);
-		NewsDto byTitle = service.findByTitle(title);
-		return byTitle;
+	@GetMapping(value = "/titlesearch")
+	public List<NewsDto> findByCategory(@ModelAttribute("title") @RequestParam(value = "title") Long id) {
+
+		CategoryDto byCategory = service.findByCategory(id);
+
+		List<NewsDto> dto = nservice.findAll();
+
+		if (dto.get(0).getCategory().contains(byCategory.getId())) {
+			return dto;
+		}
+		return dto;
 
 	}
 
-
-	
 	/*
 	 * @GetMapping(value = "/{id}/{category}") public CategoryDto
-	 * findByCategory(@RequestParam("category") CategoryDto category) { NewsDto news
-	 * = service.findByCategory(category); List<CategoryDto> byCategory =
+	 * findByCategory(@RequestParam("category") CategoryDto category) { CategoryDto
+	 * news = service.findByCategory(category); List<CategoryDto> byCategory =
 	 * news.getCategory(); return byCategory.get(0); }
 	 */
 }

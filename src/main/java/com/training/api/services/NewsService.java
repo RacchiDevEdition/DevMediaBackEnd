@@ -1,6 +1,5 @@
 package com.training.api.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,27 +22,27 @@ public class NewsService {
 		return findAll;
 	}
 
-	public List<NewsDto> findById(Long id) {
-		Optional<News> news = repository.findById(id);
-		List<NewsDto> findById = news.stream().map(x -> new NewsDto(x)).toList();
+	public NewsDto findById(Long id) {
+		News news = repository.findById(id).get();
+		NewsDto findById = new NewsDto(news);
 		return findById;
 
 	}
 
-	public List<NewsDto> findByTitle(String title) {
+	public NewsDto findByTitle(String title) {
 
 		List<News> news = repository.searchTitle(title);
-		
-	
 		System.out.println(news);
 		List<NewsDto> n1 = news.stream().map(x -> new NewsDto(x)).toList();
 		for (NewsDto dto : n1) {
 			if (dto.getTitle().equalsIgnoreCase(title)) {
-				n1.add(dto);
+			
+				return dto;
+
 			}
-			return n1;
+
 		}
-		return n1;
+		return null;
 	}
 
 	/*
