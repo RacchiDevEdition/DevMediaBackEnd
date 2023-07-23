@@ -5,7 +5,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,9 +25,8 @@ public class Category {
 	private Long id;
 	private String name;
 
-	
-	@ManyToMany(mappedBy = "categories" , fetch = FetchType.LAZY)
-    @JsonBackReference
+	@ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties
 	private Set<News> news = new HashSet<>();
 
 	public Category(Long id, String name) {
@@ -53,6 +54,7 @@ public class Category {
 		this.name = name;
 	}
 
+	@JsonBackReference
 	public Set<News> getNews() {
 		return news;
 	}

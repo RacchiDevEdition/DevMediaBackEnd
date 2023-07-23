@@ -1,7 +1,6 @@
 package com.training.api.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,23 +31,19 @@ public class NewsService {
 	public NewsDto findByTitle(String title) {
 
 		List<News> news = repository.searchTitle(title);
-		System.out.println(news);
 		List<NewsDto> n1 = news.stream().map(x -> new NewsDto(x)).toList();
 		for (NewsDto dto : n1) {
 			if (dto.getTitle().equalsIgnoreCase(title)) {
-			
 				return dto;
-
 			}
-
 		}
 		return null;
 	}
 
-	/*
-	 * public NewsDto findByCategory(CategoryDto category) {
-	 * 
-	 * News news = repository.findByCategory(category); NewsDto byCategory = new
-	 * NewsDto(news); return byCategory; }
-	 */
+	public NewsDto createNew(News news) {
+		News dto = repository.save(news);
+		NewsDto response = new NewsDto(dto);
+		
+		return response;
+	}
 }

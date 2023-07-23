@@ -10,8 +10,8 @@ import com.training.api.models.News;
 public interface NewsRepository extends JpaRepository<News, Long> {
 
 	List<News> findByTitleContainingIgnoreCase(String title);
-	// News findByCategory(CategoryDto category);
 
 	@Query(nativeQuery = true, value = "SELECT * FROM tb_news WHERE title = ? ")
 	List<News> searchTitle(String title);
+
 }

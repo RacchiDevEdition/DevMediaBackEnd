@@ -51,6 +51,7 @@ public class NewsDto {
 		this.content = content;
 	}
 
+	
 	public Set<Category> getCategory() {
 		return category;
 	}

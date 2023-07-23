@@ -2,12 +2,14 @@ package com.training.api.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.training.api.dto.CategoryDto;
 import com.training.api.models.Category;
+import com.training.api.models.News;
 import com.training.api.repositories.CategoryRepository;
 
 @Service
@@ -29,27 +31,16 @@ public class CategoryService {
 
 	}
 
-	public CategoryDto findByCategory(Long id) {
+	public Set<News> findByCategory(Long id) {
 
 		List<Category> cat = repository.searchTitleByCategory(id);
-		List<CategoryDto> n1 = cat.stream().map(x -> new CategoryDto(x)).toList();
-		
-		for (CategoryDto dto : n1) {
-			if (dto.getId().equals(id)) {
-
-				return dto;
-
-			}
+		for (Category c : cat) {
+			if(c.getId() == id)
+			return c.getNews();
 
 		}
+
 		return null;
 
 	}
-
-	/*
-	 * public CategoryDto findByCategory(CategoryDto category) {
-	 * 
-	 * = repository.findByCategory(category); CategoryDto byCategory = new
-	 * CategoryDto(); return byCategory; }
-	 */
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.training.api.dto.NewsDto;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,8 +28,8 @@ public class News {
 	private String title;
 	private String content;
 
-    @ManyToMany
-    @JsonManagedReference
+	@ManyToMany
+	@JsonIgnore
 	@JoinTable(name = "tb_news_category", joinColumns = @JoinColumn(name = "news_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
@@ -37,7 +38,7 @@ public class News {
 		this.id = id;
 		this.title = title;
 		this.content = content;
-		
+
 	}
 
 	public News() {
@@ -45,14 +46,12 @@ public class News {
 	}
 
 	public News(NewsDto news) {
-		
+
 		this.id = news.getId();
 		this.title = news.getTitle();
 		this.content = news.getContent();
 
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -78,7 +77,8 @@ public class News {
 		this.content = content;
 	}
 
-	@JsonManagedReference
+	
+	@JsonIgnore
 	public Set<Category> getCategory() {
 		return categories;
 	}
@@ -99,7 +99,5 @@ public class News {
 		News other = (News) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	
 
 }
