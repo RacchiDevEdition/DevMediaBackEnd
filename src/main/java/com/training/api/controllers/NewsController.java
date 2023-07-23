@@ -1,6 +1,5 @@
 package com.training.api.controllers;
 
-import java.awt.PageAttributes.MediaType;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.training.api.dto.NewsDto;
+import com.training.api.exceptions.NewsException;
 import com.training.api.models.News;
 import com.training.api.services.NewsService;
 import com.training.api.utils.URL;
@@ -42,14 +42,26 @@ public class NewsController {
 	public NewsDto findByTitleIs(@ModelAttribute("title") @RequestParam String title) {
 
 		title = URL.decodeParam(title);
+
 		NewsDto byTitle = service.findByTitle(title);
 		return byTitle;
-
 	}
 
-	@PostMapping(value = "/createNew", consumes = { "application/xml","application/json;charset=UTF-8" })
+	@PostMapping(value = "/createNew", consumes = { "application/xml", "application/json;charset=UTF-8" })
 	public NewsDto createNew(@RequestBody News news) {
-		NewsDto dto = service.createNew(news);
-		return dto;
+
+		try {
+			if (!news.getTitle().isEmpty() && !news.getContent().isEmpty()) {
+				NewsDto dto = service.createNew(news);
+				return dto;
+			} else {
+				System.out.println("Error creating your post! Please check if your title and content are filled");
+
+			}
+		} catch (NewsException e) {
+			System.out.println("Error in new: " + e.getMessage());
+		}
+		return null;
+
 	}
 }

@@ -78,7 +78,7 @@ public class News {
 	}
 
 	
-	@JsonIgnore
+	
 	public Set<Category> getCategory() {
 		return categories;
 	}
